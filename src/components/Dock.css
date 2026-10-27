@@ -1,0 +1,89 @@
+.dock {
+  position: fixed;
+  left: 50%;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  z-index: 32;
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  padding: 6px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 16px 34px -16px rgba(150, 57, 110, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  animation: dock-in 0.7s 0.35s var(--ease-spring) both;
+  max-width: calc(100vw - 16px);
+}
+
+.dock__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 58px;
+  min-height: 48px;
+  padding: 5px 8px 4px;
+  border-radius: 999px;
+  color: var(--ink-500);
+  transition: transform 0.2s var(--ease-spring), background 0.24s var(--ease-soft),
+    color 0.24s var(--ease-soft);
+}
+
+.dock__btn:active {
+  transform: scale(0.94);
+}
+
+.dock__btn.is-active {
+  color: #fff;
+  background: linear-gradient(150deg, #ff8cc0 0%, #f65ba4 60%, #e94f97 100%);
+  box-shadow: 0 8px 16px -10px rgba(226, 63, 132, 0.95);
+}
+
+.dock__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+}
+
+.dock__label {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.dock__dot {
+  position: absolute;
+  top: -1px;
+  right: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ffb703;
+  box-shadow: 0 0 0 2px #fff;
+}
+
+@keyframes dock-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 22px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock {
+    animation: none;
+  }
+}

@@ -1,0 +1,303 @@
+.opening {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(18px, env(safe-area-inset-top, 0px)) 16px max(18px, env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+  text-align: center;
+  overflow: hidden;
+}
+
+.opening__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.4vh, 12px);
+  width: 100%;
+  max-width: 420px;
+  /* the text is not interactive, so taps pass through to the balloons.
+     The call to action below re-enables pointer events for itself. */
+  pointer-events: none;
+  animation: opening-in 0.9s var(--ease-out) both;
+}
+
+/* soft halo so the type stays crisp over balloons and pastel blobs */
+.opening__inner::before {
+  content: '';
+  position: absolute;
+  inset: -14% -10%;
+  z-index: -1;
+  border-radius: 46%;
+  background: radial-gradient(60% 60% at 50% 45%, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0));
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.opening__from {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  font-size: clamp(0.64rem, 2.8vw, 0.78rem);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: var(--pink-600);
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 18px -14px rgba(180, 60, 120, 0.8);
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+}
+
+/* --- the 17 badge ------------------------------------------------------- */
+
+.opening__badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(76px, min(28vw, 15vh), 118px);
+  height: clamp(76px, min(28vw, 15vh), 118px);
+  margin-top: clamp(2px, 1vh, 10px);
+  border-radius: 50%;
+  background:
+    radial-gradient(78% 70% at 32% 24%, #ffffff 0%, #fff1f8 42%, #ffd9ec 78%, #ffc6e2 100%);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.95),
+    0 0 0 7px rgba(246, 212, 127, 0.38),
+    0 16px 30px -16px rgba(214, 74, 140, 0.7),
+    inset 0 -6px 14px rgba(255, 176, 214, 0.55);
+  animation: badge-breathe 5s ease-in-out infinite;
+}
+
+.opening__badge-ring {
+  position: absolute;
+  inset: -13px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(214, 165, 47, 0.55);
+  animation: badge-spin 32s linear infinite;
+}
+
+.opening__num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.1rem, min(11vw, 6vh), 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  background-image: linear-gradient(170deg, #ff7fbb 0%, #f65ba4 45%, #c9a7ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 0 rgba(255, 255, 255, 0.9));
+}
+
+.opening__badge-cake {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  font-size: clamp(1rem, 3.6vw, 1.3rem);
+  filter: drop-shadow(0 2px 3px rgba(160, 60, 110, 0.3));
+}
+
+.opening__badge-label {
+  margin-top: -2px;
+  font-family: var(--font-script);
+  font-size: clamp(1rem, 3.8vw, 1.2rem);
+  font-weight: 600;
+  color: var(--ink-500);
+}
+
+/* --- copy --------------------------------------------------------------- */
+
+.opening__title {
+  margin-top: clamp(2px, 1vh, 8px);
+  font-size: clamp(1.42rem, min(7.1vw, 4.6vh), 2.25rem);
+  line-height: 1.12;
+  color: var(--ink-900);
+  text-wrap: balance;
+  max-width: 19ch;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.75);
+}
+
+.opening__almost {
+  color: var(--pink-500);
+  font-size: 1.12em;
+  line-height: 0.9;
+}
+
+.opening__sub {
+  max-width: 30ch;
+  font-size: clamp(0.85rem, 3.5vw, 0.98rem);
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--ink-500);
+  text-wrap: pretty;
+}
+
+.opening__cta {
+  position: relative;
+  pointer-events: auto;
+  margin-top: clamp(8px, 1.8vh, 16px);
+  width: min(100%, 340px);
+  padding-inline: 14px;
+  animation: cta-pulse 2.8s ease-in-out 1.2s infinite;
+}
+
+.opening__cta-label {
+  font-size: clamp(0.83rem, 3.5vw, 0.98rem);
+  letter-spacing: 0.045em;
+  white-space: nowrap;
+}
+
+.opening__cta-spark {
+  font-size: 1.05em;
+}
+
+.opening__hint {
+  font-size: clamp(0.68rem, 3vw, 0.78rem);
+  font-weight: 700;
+  color: var(--ink-300);
+  margin-top: 2px;
+}
+
+/* --- entrance + exit ---------------------------------------------------- */
+
+.opening.is-leaving {
+  pointer-events: none;
+  animation: opening-out 0.62s var(--ease-out) forwards;
+}
+
+.opening.is-leaving .opening__inner {
+  animation: opening-inner-out 0.62s var(--ease-out) forwards;
+}
+
+@keyframes opening-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes opening-inner-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.06) translateY(-14px);
+    filter: blur(6px);
+  }
+}
+
+@keyframes opening-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes badge-breathe {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(1deg);
+  }
+}
+
+@keyframes badge-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cta-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 12px 24px -10px rgba(226, 63, 132, 0.65),
+      0 0 0 0 rgba(255, 120, 180, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+  55% {
+    box-shadow:
+      0 14px 28px -10px rgba(226, 63, 132, 0.6),
+      0 0 0 12px rgba(255, 120, 180, 0),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* --- landscape / short screens ----------------------------------------- */
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .opening {
+    padding-inline: 22px;
+  }
+
+  .opening__inner {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px 18px;
+    max-width: 720px;
+    text-align: left;
+  }
+
+  .opening__inner::before {
+    inset: -30%;
+  }
+
+  .opening__from,
+  .opening__badge-label,
+  .opening__hint {
+    display: none;
+  }
+
+  .opening__badge {
+    width: clamp(74px, 18vh, 104px);
+    height: clamp(74px, 18vh, 104px);
+    order: 1;
+    margin: 0;
+  }
+
+  .opening__title {
+    order: 2;
+    max-width: 16ch;
+    margin: 0;
+  }
+
+  .opening__sub {
+    order: 3;
+    max-width: 26ch;
+    font-size: 0.82rem;
+  }
+
+  .opening__cta {
+    order: 4;
+    margin: 0;
+    width: min(100%, 300px);
+  }
+}
+
+@media (max-height: 400px) {
+  .opening {
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+}

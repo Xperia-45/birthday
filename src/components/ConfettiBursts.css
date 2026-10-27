@@ -1,0 +1,107 @@
+.burst-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.burst {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.burst__ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+  animation: burst-ring 0.5s ease-out forwards;
+}
+
+.burst__p {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  background: var(--color);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: burst-fly var(--duration) cubic-bezier(0.15, 0.72, 0.3, 1) var(--delay) forwards;
+}
+
+.burst__p--circle {
+  border-radius: 50%;
+}
+
+.burst__p--square {
+  border-radius: 2px;
+}
+
+.burst__p--ribbon {
+  width: calc(var(--size) * 0.55);
+  height: var(--size);
+  border-radius: 2px;
+}
+
+.burst__p--star {
+  border-radius: 0;
+  clip-path: polygon(
+    50% 0%,
+    61% 34%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 34%
+  );
+}
+
+@keyframes burst-fly {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(0.4);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+    transform: translate3d(calc(var(--dx) * 0.18), calc(var(--dy) * 0.18), 0) rotate(calc(var(--rot) * 0.15))
+      scale(1);
+  }
+  100% {
+    transform: translate3d(var(--dx), calc(var(--dy) + 42px), 0) rotate(var(--rot)) scale(0.28);
+    opacity: 0;
+  }
+}
+
+@keyframes burst-ring {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .burst__p {
+    animation: none;
+    opacity: 0;
+  }
+  .burst__ring {
+    animation: none;
+    opacity: 0;
+  }
+}

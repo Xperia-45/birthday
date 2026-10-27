@@ -1,0 +1,129 @@
+.balloon-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+  contain: layout paint;
+}
+
+.balloon {
+  position: absolute;
+  left: var(--left, 50%);
+  top: 100%;
+  width: var(--size, 60px);
+  padding: 0;
+  margin-left: calc(var(--size, 60px) / -2);
+  background: none;
+  border: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: manipulation;
+  animation: balloon-rise var(--dur, 16s) linear var(--delay, 0s) forwards;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.balloon.is-static {
+  top: auto;
+  animation: none;
+  pointer-events: auto;
+}
+
+.balloon__sway {
+  display: block;
+  transform-origin: 50% 100%;
+  animation: balloon-sway var(--sway-dur, 3.4s) ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.balloon__art {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(168, 76, 124, 0.18));
+  transition: transform 0.18s var(--ease-spring);
+}
+
+.balloon:active .balloon__art {
+  transform: scale(0.93);
+}
+
+.balloon:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 4px;
+  border-radius: 48% 48% 42% 42%;
+}
+
+/* pop state ------------------------------------------------------------- */
+
+.balloon.is-popped {
+  pointer-events: none;
+}
+
+.balloon.is-popped .balloon__sway {
+  animation: balloon-pop 0.26s cubic-bezier(0.3, 1.4, 0.6, 1) forwards;
+}
+
+.balloon__pop-ring {
+  position: absolute;
+  inset: 12% 8% 20%;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  opacity: 0;
+}
+
+.balloon.is-popped .balloon__pop-ring {
+  animation: pop-ring 0.32s ease-out forwards;
+}
+
+@keyframes balloon-rise {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(var(--drift, 0px), calc(-100svh - 320px), 0);
+  }
+}
+
+@keyframes balloon-sway {
+  from {
+    transform: translateX(-9px) rotate(-5deg);
+  }
+  to {
+    transform: translateX(9px) rotate(5deg);
+  }
+}
+
+@keyframes balloon-pop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  45% {
+    transform: scale(1.24) rotate(3deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(0.55) rotate(-4deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pop-ring {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .balloon__sway {
+    animation: none;
+  }
+  .balloon {
+    animation: none;
+  }
+}
